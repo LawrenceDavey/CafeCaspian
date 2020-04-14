@@ -13,25 +13,29 @@ namespace CafeCaspian.Repositories
             {
                 Id = Guid.NewGuid(),
                 Name = "Cola",
-                Cost = 0.50m
+                Cost = 0.50m,
+                Type = Enums.ProductType.Drink
             },
             new Product()
             {
                 Id = Guid.NewGuid(),
                 Name = "Coffee",
-                Cost = 1.00m
+                Cost = 1.00m,
+                Type = Enums.ProductType.Drink
             },
             new Product()
             {
                 Id = Guid.NewGuid(),
                 Name = "Cheese Sandwich",
-                Cost = 2.00m
+                Cost = 2.00m,
+                Type = Enums.ProductType.Food
             },
             new Product()
             {
                 Id = Guid.NewGuid(),
                 Name = "Steak Sandwich",
-                Cost = 4.50m
+                Cost = 4.50m,
+                Type = Enums.ProductType.Food
             }
         };
 

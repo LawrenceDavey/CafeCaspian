@@ -8,5 +8,6 @@ namespace CafeCaspian.Services.Interfaces
     public interface IBillService
     {
         decimal GetTotalBill(IEnumerable<string> products);
+        decimal GetServiceCharge(IEnumerable<string> products);
     }
 }

@@ -113,5 +113,33 @@ namespace CafeCaspianTests
             var ex = Assert.Throws<ProductNotFoundException>(() => billService.GetTotalBill(mockProducts));
             Assert.Equal("Invalid products provided", ex.Message);
         }
+
+        [Fact]
+        public void GetBillTotal_NoServiceChargeForDrinks()
+        {
+            // Arrange
+            var mockProducts = new List<string>()
+            {
+                "Cola",
+                "Coffee"
+            };
+
+            var mockProductRepo = new Mock<IProductRepository>();
+            foreach (var item in mockProducts)
+            {
+                mockProductRepo.Setup(x => x.GetByName(item)).Returns(PRODUCTS.Find(p => p.Name == item));
+            }
+
+            var billService = new BillService(mockProductRepo.Object);
+
+            // Act
+            var serviceCharge = billService.GetServiceCharge(mockProducts);
+
+            var totalBill = billService.GetTotalBill(mockProducts);
+
+            // Assert
+            Assert.Equal(1.5m, totalBill);
+            Assert.Equal(0, serviceCharge);
+        }
     }
 }

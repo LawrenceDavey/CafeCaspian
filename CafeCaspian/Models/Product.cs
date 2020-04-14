@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CafeCaspian.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace CafeCaspian.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public decimal Cost { get; set; }
+        public ProductType Type { get; set; }
     }
 
     public class ProductNotFoundException : Exception

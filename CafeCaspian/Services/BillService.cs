@@ -37,5 +37,10 @@ namespace CafeCaspian.Services
 
             return totalCost;
         }
+
+        public decimal GetServiceCharge(IEnumerable<string> products)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
