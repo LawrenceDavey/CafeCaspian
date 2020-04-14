@@ -1,4 +1,5 @@
-﻿using CafeCaspian.Repositories.Interfaces;
+﻿using CafeCaspian.Models;
+using CafeCaspian.Repositories.Interfaces;
 using CafeCaspian.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace CafeCaspian.Services
                 else
                 {
                     // invalid product
-                    throw new NotImplementedException();
+                    throw new ProductNotFoundException("Invalid products provided");
                 }
             }
 
