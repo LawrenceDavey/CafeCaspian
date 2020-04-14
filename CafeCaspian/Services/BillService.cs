@@ -4,6 +4,7 @@ using CafeCaspian.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace CafeCaspian.Services
 {
@@ -19,6 +20,7 @@ namespace CafeCaspian.Services
         public decimal GetTotalBill(IEnumerable<string> products)
         {
             var totalCost = 0.0m;
+            var productItems = new List<Product>();
 
             foreach(var item in products)
             {
@@ -26,6 +28,7 @@ namespace CafeCaspian.Services
 
                 if (product != null)
                 {
+                    productItems.Add(product);
                     totalCost += product.Cost;
                 }
                 else
@@ -35,12 +38,24 @@ namespace CafeCaspian.Services
                 }
             }
 
+            // add service charge
+            totalCost += GetServiceCharge(productItems);
+
             return totalCost;
         }
 
-        public decimal GetServiceCharge(IEnumerable<string> products)
+        public decimal GetServiceCharge(IEnumerable<Product> products)
         {
-            throw new NotImplementedException();
+            if (AllDrinkProducts(products))
+            {
+                return 0;
+            }
+            return 0;
+        }
+
+        private static bool AllDrinkProducts(IEnumerable<Product> products)
+        {
+            return products.All(p => p.Type == Enums.ProductType.Drink);
         }
     }
 }

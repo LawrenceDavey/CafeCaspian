@@ -118,6 +118,22 @@ namespace CafeCaspianTests
         public void GetBillTotal_NoServiceChargeForDrinks()
         {
             // Arrange
+            var mockProductItems = new List<Product>()
+            {
+                new Product()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Cola",
+                    Cost = 0.50m
+                },
+                new Product()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Coffee",
+                    Cost = 1.00m
+                }
+            };
+
             var mockProducts = new List<string>()
             {
                 "Cola",
@@ -133,13 +149,57 @@ namespace CafeCaspianTests
             var billService = new BillService(mockProductRepo.Object);
 
             // Act
-            var serviceCharge = billService.GetServiceCharge(mockProducts);
+            var serviceCharge = billService.GetServiceCharge(mockProductItems);
 
             var totalBill = billService.GetTotalBill(mockProducts);
 
             // Assert
             Assert.Equal(1.5m, totalBill);
             Assert.Equal(0, serviceCharge);
+        }
+
+        [Fact]
+        public void GetBillTotal_ServiceChargeForFood()
+        {
+            // Arrange
+            var mockProductItems = new List<Product>()
+            {
+                new Product()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Cola",
+                    Cost = 0.50m
+                },
+                new Product()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Cheese Sandwich",
+                    Cost = 2.00m
+                }
+            };
+
+            var mockProducts = new List<string>()
+            {
+                "Cola",
+                "Cheese Sandwich"
+            };
+
+            var mockProductRepo = new Mock<IProductRepository>();
+            foreach (var item in mockProducts)
+            {
+                mockProductRepo.Setup(x => x.GetByName(item)).Returns(PRODUCTS.Find(p => p.Name == item));
+            }
+
+            var billService = new BillService(mockProductRepo.Object);
+
+            // Act
+            var serviceCharge = billService.GetServiceCharge(mockProductItems);
+
+            var totalBill = billService.GetTotalBill(mockProducts);
+
+            // Assert
+            Assert.Equal(2.75m, totalBill);
+            Assert.Equal(0.25m, serviceCharge);
         }
     }
 }
