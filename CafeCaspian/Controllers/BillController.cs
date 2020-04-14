@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CafeCaspian.Models;
 using CafeCaspian.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,9 +30,9 @@ namespace CafeCaspian.Controllers
                     var result = _billService.GetTotalBill(products);
                     return Ok(result);
                 }
-                catch (Exception)
+                catch (ProductNotFoundException ex)
                 {
-                    throw new NotImplementedException();
+                    return BadRequest(ex.Message);
                 }
             }
             else
