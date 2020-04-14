@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CafeCaspian.Repositories;
+using CafeCaspian.Repositories.Interfaces;
+using CafeCaspian.Services;
+using CafeCaspian.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +30,9 @@ namespace CafeCaspian
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddSingleton<IProductRepository, ProductRepository>();
+            services.AddTransient<IBillService, BillService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
