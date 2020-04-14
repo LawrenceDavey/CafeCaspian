@@ -16,13 +16,24 @@ namespace CafeCaspian.Services
         {
             _productRepo = productRepo;
         }
-
+        
         public decimal GetTotalBill(IEnumerable<string> products)
         {
-            var totalCost = 0.0m;
             var productItems = new List<Product>();
+            var productCost = GetProductTotal(products, productItems);
 
-            foreach(var item in products)
+            // add service charge
+            var serviceCharge = GetServiceCharge(productItems);
+            decimal maxServiceCharge = GetMaximumServiceCharge(productCost, serviceCharge);
+            var totalCost = serviceCharge != 0 ? productCost + maxServiceCharge : productCost;
+
+            return Math.Round(totalCost, 2);
+        }
+
+        public decimal GetProductTotal(IEnumerable<string> products, List<Product> productItems)
+        {
+            var totalCost = 0.0m;
+            foreach (var item in products)
             {
                 var product = _productRepo.GetByName(item);
 
@@ -38,11 +49,12 @@ namespace CafeCaspian.Services
                 }
             }
 
-            // add service charge
-            var serviceCharge = GetServiceCharge(productItems);
-            totalCost = serviceCharge != 0 ? totalCost + (totalCost * serviceCharge) : totalCost;
+            return totalCost;
+        }
 
-            return Math.Round(totalCost, 2);
+        public decimal GetMaximumServiceCharge(decimal totalCost, decimal serviceCharge)
+        {
+            return totalCost * serviceCharge > 20.00m ? 20.00m : totalCost * serviceCharge;
         }
 
         public decimal GetServiceCharge(IEnumerable<Product> products)
@@ -51,11 +63,26 @@ namespace CafeCaspian.Services
             {
                 return 0;
             }
-            else if (products.Any(p => p.Type == Enums.ProductType.Food))
+            else if (ProductsIncludeColdFood(products))
             {
-                return 0.1m;
+                return 0.10m;
             }
+            else if (ProductsIncludeHotFood(products))
+            {
+                return 0.20m;
+            }
+
             return 0;
+        }
+
+        private static bool ProductsIncludeHotFood(IEnumerable<Product> products)
+        {
+            return products.Any(p => p.Type == Enums.ProductType.Food && p.IsHot);
+        }
+
+        private static bool ProductsIncludeColdFood(IEnumerable<Product> products)
+        {
+            return products.Any(p => p.Type == Enums.ProductType.Food && !p.IsHot);
         }
 
         private static bool AllDrinkProducts(IEnumerable<Product> products)

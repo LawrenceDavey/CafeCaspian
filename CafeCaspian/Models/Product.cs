@@ -12,6 +12,7 @@ namespace CafeCaspian.Models
         public string Name { get; set; }
         public decimal Cost { get; set; }
         public ProductType Type { get; set; }
+        public bool IsHot { get; set; }
     }
 
     public class ProductNotFoundException : Exception

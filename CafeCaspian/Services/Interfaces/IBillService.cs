@@ -10,5 +10,7 @@ namespace CafeCaspian.Services.Interfaces
     {
         decimal GetTotalBill(IEnumerable<string> products);
         decimal GetServiceCharge(IEnumerable<Product> products);
+        decimal GetMaximumServiceCharge(decimal totalCost, decimal serviceCharge);
+        decimal GetProductTotal(IEnumerable<string> products, List<Product> productItems);
     }
 }
