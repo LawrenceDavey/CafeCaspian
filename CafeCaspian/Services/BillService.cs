@@ -39,9 +39,10 @@ namespace CafeCaspian.Services
             }
 
             // add service charge
-            totalCost += GetServiceCharge(productItems);
+            var serviceCharge = GetServiceCharge(productItems);
+            totalCost = serviceCharge != 0 ? totalCost + (totalCost * serviceCharge) : totalCost;
 
-            return totalCost;
+            return Math.Round(totalCost, 2);
         }
 
         public decimal GetServiceCharge(IEnumerable<Product> products)
@@ -49,6 +50,10 @@ namespace CafeCaspian.Services
             if (AllDrinkProducts(products))
             {
                 return 0;
+            }
+            else if (products.Any(p => p.Type == Enums.ProductType.Food))
+            {
+                return 0.1m;
             }
             return 0;
         }

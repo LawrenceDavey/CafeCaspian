@@ -18,25 +18,29 @@ namespace CafeCaspianTests
             {
                 Id = Guid.NewGuid(),
                 Name = "Cola",
-                Cost = 0.50m
+                Cost = 0.50m,
+                Type = CafeCaspian.Enums.ProductType.Drink
             },
             new Product()
             {
                 Id = Guid.NewGuid(),
                 Name = "Coffee",
-                Cost = 1.00m
+                Cost = 1.00m,
+                Type = CafeCaspian.Enums.ProductType.Drink
             },
             new Product()
             {
                 Id = Guid.NewGuid(),
                 Name = "Cheese Sandwich",
-                Cost = 2.00m
+                Cost = 2.00m,
+                Type = CafeCaspian.Enums.ProductType.Food
             },
             new Product()
             {
                 Id = Guid.NewGuid(),
                 Name = "Steak Sandwich",
-                Cost = 4.50m
+                Cost = 4.50m,
+                Type = CafeCaspian.Enums.ProductType.Food
             }
         };
 
@@ -63,7 +67,7 @@ namespace CafeCaspianTests
             var totalBill = billService.GetTotalBill(mockProducts);
 
             // Assert
-            Assert.Equal(3.5m, totalBill);
+            Assert.Equal(3.85m, totalBill);
         }
 
         [Fact]
@@ -87,7 +91,7 @@ namespace CafeCaspianTests
             var totalBill = billService.GetTotalBill(mockProducts);
 
             // Assert
-            Assert.Equal(2.0m, totalBill);
+            Assert.Equal(2.20m, totalBill);
         }
 
         [Fact]
@@ -124,13 +128,15 @@ namespace CafeCaspianTests
                 {
                     Id = Guid.NewGuid(),
                     Name = "Cola",
-                    Cost = 0.50m
+                    Cost = 0.50m,
+                    Type = CafeCaspian.Enums.ProductType.Drink
                 },
                 new Product()
                 {
                     Id = Guid.NewGuid(),
                     Name = "Coffee",
-                    Cost = 1.00m
+                    Cost = 1.00m,
+                    Type = CafeCaspian.Enums.ProductType.Drink
                 }
             };
 
@@ -168,13 +174,15 @@ namespace CafeCaspianTests
                 {
                     Id = Guid.NewGuid(),
                     Name = "Cola",
-                    Cost = 0.50m
+                    Cost = 0.50m,
+                    Type = CafeCaspian.Enums.ProductType.Drink
                 },
                 new Product()
                 {
                     Id = Guid.NewGuid(),
                     Name = "Cheese Sandwich",
-                    Cost = 2.00m
+                    Cost = 2.00m,
+                    Type = CafeCaspian.Enums.ProductType.Food
                 }
             };
 
@@ -199,7 +207,7 @@ namespace CafeCaspianTests
 
             // Assert
             Assert.Equal(2.75m, totalBill);
-            Assert.Equal(0.25m, serviceCharge);
+            Assert.Equal(0.10m, serviceCharge);
         }
     }
 }
